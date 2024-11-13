@@ -259,7 +259,7 @@ def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
             optimizer.zero_grad()
             pred_y, pred_y1 = model(batch_coeffs)
             reg_loss = sum(torch.norm(p1 - p2) for p1, p2 in zip(model.cross_attn.parameters(), model.cross_attn1.parameters()))
-            loss = criterion(pred_y, batch_y) + criterion(pred_y1, batch_y1) + 0.7 * reg_loss
+            loss = criterion(pred_y, batch_y) + criterion(pred_y1, batch_y1) + sharing * reg_loss
             loss.backward()
             optimizer.step()
 
