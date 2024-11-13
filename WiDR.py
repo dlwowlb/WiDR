@@ -19,7 +19,7 @@ parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
 parser.add_argument('--FFN', type=int, default=256, help='Feedforward network')
 parser.add_argument('--MHA', type=int, default=4, help='Multihead attention')
 parser.add_argument('--nnn', type=int, default=400, help='Neural CDE hidden nodes')
-parser.add_argument('--sharing', type=float, default=0.7, help='parameter sharing)
+parser.add_argument('--sharing', type=float, default=0.7, help='parameter sharing')
 args = parser.parse_args()
 
 
