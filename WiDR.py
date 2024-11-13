@@ -10,6 +10,7 @@ from torch.optim.lr_scheduler import StepLR
 from torch.utils.data import DataLoader, Dataset
 import scipy.io as sio
 import torchcde
+import torch.nn.functional as F
 
 # Argument parsing
 parser = argparse.ArgumentParser(description="Run Neural CDE Training")
@@ -29,14 +30,14 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 # Load train data
-data_amp = sio.loadmat('../data/train_data_split_amp.mat')
+data_amp = sio.loadmat('./data/ARIL/train_data_split_amp.mat')
 train_data_amp = data_amp['train_data']
 train_data = torch.from_numpy(train_data_amp).type(torch.FloatTensor).transpose(1, 2)
 train_label = torch.from_numpy(data_amp['train_activity_label']).type(torch.LongTensor).squeeze()
 train_label1 = torch.from_numpy(data_amp['train_location_label']).type(torch.LongTensor).squeeze()
 
 # Load test data
-data_amp = sio.loadmat('../data/test_data_split_amp.mat')
+data_amp = sio.loadmat('./data/ARIL/test_data_split_amp.mat')
 test_data_amp = data_amp['test_data']
 test_data = torch.from_numpy(test_data_amp).type(torch.FloatTensor).transpose(1, 2)
 test_label = torch.from_numpy(data_amp['test_activity_label']).type(torch.LongTensor).squeeze()
@@ -65,12 +66,12 @@ class CustomTensorDataset(Dataset):
 # Neural CDE and helper classes
 # (Define PositionalEncoding, BottleneckBlock, CrossAttention, TransformerEncoder, CDEFunc, NeuralCDE)
 class CDEFunc(torch.nn.Module):
-    def __init__(self, input_channels, hidden_channels):
+    def __init__(self, input_channels, hidden_channels, nodes):
         super(CDEFunc, self).__init__()
         self.input_channels = input_channels
         self.hidden_channels = hidden_channels
-        self.linear1 = torch.nn.Linear(hidden_channels, nnn)
-        self.linear2 = torch.nn.Linear(nnn, input_channels * hidden_channels)
+        self.linear1 = torch.nn.Linear(hidden_channels, nodes)
+        self.linear2 = torch.nn.Linear(nodes, input_channels * hidden_channels)
     def forward(self, t, z):
         z = self.linear1(z)
         z = z.relu()
@@ -176,16 +177,16 @@ class TransformerEncoder(nn.Module):
         src = self.positional_encoding(src)
         return self.transformer_encoder(src)
 class NeuralCDE(torch.nn.Module):
-    def __init__(self, input_channels, hidden_channels, output_channels, interpolation="cubic"):
+    def __init__(self, input_channels, hidden_channels,nodes, output_channels,Multihead, feedforward, interpolation="cubic"):
         super(NeuralCDE, self).__init__()
-        self.func = CDEFunc(input_channels, hidden_channels)
+        self.func = CDEFunc(input_channels, hidden_channels, nodes)
         self.initial = torch.nn.Linear(input_channels, hidden_channels)
         self.readout = torch.nn.Linear(hidden_channels, output_channels)
         self.interpolation = interpolation
         
         self.norm = nn.LayerNorm(52)
-        self.cross_attn = CrossAttention(embed_dim_query=192, embed_dim_key_value=52, embed_dim_output=192, num_heads=MHA,ffnn_dim=FFN) #default = 4, 1024
-        self.cross_attn1 = CrossAttention(embed_dim_query=192, embed_dim_key_value=52, embed_dim_output=192, num_heads=MHA,ffnn_dim=FFN) #default = 4, 1024
+        self.cross_attn = CrossAttention(embed_dim_query=192, embed_dim_key_value=52, embed_dim_output=192, num_heads=Multihead,ffnn_dim=feedforward) #default = 4, 1024
+        self.cross_attn1 = CrossAttention(embed_dim_query=192, embed_dim_key_value=52, embed_dim_output=192, num_heads=Multihead,ffnn_dim=feedforward) #default = 4, 1024
         
         
         self.fc = nn.Linear(192*52, 200)
@@ -242,7 +243,7 @@ class NeuralCDE(torch.nn.Module):
 
                     
 def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
-    model = NeuralCDE(input_channels=52, hidden_channels=52, output_channels=52).to(device)
+    model = NeuralCDE(input_channels=52, hidden_channels=52, output_channels=52, nodes = nnn, Multihead = MHA, feedforward = FFN).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
     scheduler = StepLR(optimizer, step_size=75, gamma=0.1)
