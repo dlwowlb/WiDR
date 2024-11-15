@@ -303,4 +303,4 @@ def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing,alpha):
             print(f'Task2 Test Accuracy: {task2_accuracy}')
 
 if __name__ == '__main__':
-    main(args.num_epochs, args.batch_size, args.lr, args.FFN, args.MHA, args.nnn, args.sharing)
+    main(args.num_epochs, args.batch_size, args.lr, args.FFN, args.MHA, args.nnn, args.sharing, args.alpha)
