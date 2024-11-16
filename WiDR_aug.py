@@ -23,6 +23,7 @@ parser.add_argument('--MHA', type=int, default=4, help='Multihead attention')
 parser.add_argument('--nnn', type=int, default=400, help='Neural CDE hidden nodes')
 parser.add_argument('--sharing', type=float, default=0.7, help='parameter sharing')
 parser.add_argument('--alpha', type=float, default=0.7, help='Data augmentation strength')
+parser.add_argument('--cutmix', action='store_true', help="Enable CutMix augmentation")
 args = parser.parse_args()
 
 
@@ -266,7 +267,13 @@ def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing,alpha):
             batch_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(batch_x).to(device)
             batch_coeffs = batch_coeffs.to(device)
 
-            aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = mixup(batch_coeffs, batch_y, batch_y1, alpha=alpha)
+            if args.cutmix:
+            	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = cutmix(batch_coeffs, batch_y, batch_y1, alpha=alpha)
+
+            else:
+            	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = mixup(batch_coeffs, batch_y, batch_y1, alpha=alpha)
+
+
             aug_data = aug_data.to(device)
 
             optimizer.zero_grad()
