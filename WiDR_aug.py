@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader, Dataset
 import scipy.io as sio
 import torchcde
 import torch.nn.functional as F
-from utils.mixup import mixup
+from utils.augmentation import mixup, cutmix
 
 # Argument parsing
 parser = argparse.ArgumentParser(description="Run Neural CDE Training")
