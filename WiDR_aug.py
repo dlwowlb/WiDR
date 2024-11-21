@@ -272,7 +272,7 @@ def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing,alpha):
             	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = cutmix(batch_coeffs, batch_y, batch_y1, alpha=alpha)
 
 
-            elif args.cutmix:
+            elif args.fmix:
             	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = fmix(batch_coeffs, batch_y, batch_y1, alpha=alpha)
 
             else:
