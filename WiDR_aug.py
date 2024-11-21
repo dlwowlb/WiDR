@@ -11,7 +11,7 @@ from torch.utils.data import DataLoader, Dataset
 import scipy.io as sio
 import torchcde
 import torch.nn.functional as F
-from utils.augmentation import mixup, cutmix
+from utils.augmentation import mixup, cutmix, fmix
 
 # Argument parsing
 parser = argparse.ArgumentParser(description="Run Neural CDE Training")
@@ -24,6 +24,7 @@ parser.add_argument('--nnn', type=int, default=400, help='Neural CDE hidden node
 parser.add_argument('--sharing', type=float, default=0.7, help='parameter sharing')
 parser.add_argument('--alpha', type=float, default=0.7, help='Data augmentation strength')
 parser.add_argument('--cutmix', action='store_true', help="Enable CutMix augmentation")
+parser.add_argument('--fmix', action='store_true', help="Enable FMix augmentation")
 args = parser.parse_args()
 
 
@@ -269,6 +270,10 @@ def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing,alpha):
 
             if args.cutmix:
             	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = cutmix(batch_coeffs, batch_y, batch_y1, alpha=alpha)
+
+
+            elif args.cutmix:
+            	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = fmix(batch_coeffs, batch_y, batch_y1, alpha=alpha)
 
             else:
             	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = mixup(batch_coeffs, batch_y, batch_y1, alpha=alpha)
