@@ -11,7 +11,6 @@ from torch.utils.data import DataLoader, Dataset
 import scipy.io as sio
 import torchcde
 import torch.nn.functional as F
-from utils.augmentation import mixup, cutmix, fmix
 
 # Argument parsing
 parser = argparse.ArgumentParser(description="Run Neural CDE Training")
@@ -22,9 +21,6 @@ parser.add_argument('--FFN', type=int, default=256, help='Feedforward network')
 parser.add_argument('--MHA', type=int, default=4, help='Multihead attention')
 parser.add_argument('--nnn', type=int, default=400, help='Neural CDE hidden nodes')
 parser.add_argument('--sharing', type=float, default=0.7, help='parameter sharing')
-parser.add_argument('--alpha', type=float, default=0.9, help='Data augmentation strength')
-parser.add_argument('--cutmix', action='store_true', help="Enable CutMix augmentation")
-parser.add_argument('--fmix', action='store_true', help="Enable FMix augmentation")
 args = parser.parse_args()
 
 
@@ -246,57 +242,24 @@ class NeuralCDE(torch.nn.Module):
 
 
                     
-def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing,alpha):
+def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
     model = NeuralCDE(input_channels=52, hidden_channels=52, output_channels=52, nodes = nnn, Multihead = MHA, feedforward = FFN).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
     scheduler = StepLR(optimizer, step_size=75, gamma=0.1)
 
-    #train_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(train_data)
-
-
-    train_dataset = CustomTensorDataset(train_data, (train_label, train_label1))
+    train_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(train_data)
+    train_dataset = CustomTensorDataset(train_coeffs, (train_label, train_label1))
     train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
 
     for epoch in range(num_epochs):
         model.train()
-        for batch_x, batch_y, batch_y1 in train_dataloader:
-            
-
-            batch_x, batch_y, batch_y1 = batch_x.to(device), batch_y.to(device), batch_y1.to(device)
-
-            batch_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(batch_x).to(device)
-            batch_coeffs = batch_coeffs.to(device)
-
-            if args.cutmix:
-            	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = cutmix(batch_coeffs, batch_y, batch_y1, alpha=alpha)
-
-
-            elif args.fmix:
-            	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = fmix(batch_coeffs, batch_y, batch_y1, alpha=alpha)
-
-            else:
-            	aug_data, (batch_y, shuffled_targets_A), (batch_y1, shuffled_targets_B), lam = mixup(batch_coeffs, batch_y, batch_y1, alpha=alpha)
-
-
-            aug_data = aug_data.to(device)
-
+        for batch_coeffs, batch_y, batch_y1 in train_dataloader:
+            batch_coeffs, batch_y, batch_y1 = batch_coeffs.to(device), batch_y.to(device), batch_y1.to(device)
             optimizer.zero_grad()
-            pred_y, pred_y1 = model(aug_data)
-            pred_y = pred_y.squeeze(-1).to(device)
-            pred_y1 = pred_y1.squeeze(-1).to(device)
-
-
+            pred_y, pred_y1 = model(batch_coeffs)
             reg_loss = sum(torch.norm(p1 - p2) for p1, p2 in zip(model.cross_attn.parameters(), model.cross_attn1.parameters()))
-            
-            shuffled_targets_A = shuffled_targets_A.to(device)
-            shuffled_targets_B = shuffled_targets_B.to(device)
-
-            loss1 = lam * criterion(pred_y, batch_y) + (1. - lam) * criterion(pred_y, shuffled_targets_A)
-            loss2 = lam * criterion(pred_y1, batch_y1) + (1. - lam) * criterion(pred_y1, shuffled_targets_B)
-
-
-            loss =  loss1 + loss2 + sharing * reg_loss
+            loss = criterion(pred_y, batch_y) + criterion(pred_y1, batch_y1) + sharing * reg_loss
             loss.backward()
             optimizer.step()
 
@@ -316,4 +279,4 @@ def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing,alpha):
             print(f'Task2 Test Accuracy: {task2_accuracy}')
 
 if __name__ == '__main__':
-    main(args.num_epochs, args.batch_size, args.lr, args.FFN, args.MHA, args.nnn, args.sharing, args.alpha)
+    main(args.num_epochs, args.batch_size, args.lr, args.FFN, args.MHA, args.nnn, args.sharing)
