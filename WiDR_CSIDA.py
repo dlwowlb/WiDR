@@ -11,13 +11,14 @@ from torch.utils.data import DataLoader, Dataset
 import scipy.io as sio
 import torchcde
 import torch.nn.functional as F
-from utils import dataloader
+from pathlib import Path
+from utils.dataloader import CSIDA
 
 # Argument parsing
 parser = argparse.ArgumentParser(description="Run Neural CDE Training")
 parser.add_argument('--chunk', type=int, default=192, help='Too long, chunk time series data')
-parser.add_argument('--num_epochs', type=int, default=50, help='Number of training epochs')
-parser.add_argument('--batch_size', type=int, default=512, help='Batch size for training')
+parser.add_argument('--num_epochs', type=int, default=150, help='Number of training epochs')
+parser.add_argument('--batch_size', type=int, default=916, help='Batch size for training')
 parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
 parser.add_argument('--FFN', type=int, default=256, help='Feedforward network')
 parser.add_argument('--MHA', type=int, default=4, help='Multihead attention')
@@ -33,8 +34,8 @@ os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
 
 # Z-Score normalization
-mean, std = train_data.mean(dim=0, keepdim=True), train_data.std(dim=0, keepdim=True)
-train_data, test_data = (train_data - mean) / std, (test_data - mean) / std
+#mean, std = train_data.mean(dim=0, keepdim=True), train_data.std(dim=0, keepdim=True)
+#train_data, test_data = (train_data - mean) / std, (test_data - mean) / std
 
 
 
@@ -172,7 +173,7 @@ class NeuralCDE(torch.nn.Module):
         
         self.fc2 = nn.Linear(192*114, 200)
         self.norm4 = nn.LayerNorm(200)
-        self.fc3 = nn.Linear(200, 16)
+        self.fc3 = nn.Linear(200, 5)
 
     def forward(self, coeffs):
         if self.interpolation == 'cubic':
@@ -220,12 +221,14 @@ class NeuralCDE(torch.nn.Module):
 
                     
 def main(chunk, num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
-    model = NeuralCDE(input_channels=52, hidden_channels=52, output_channels=52, nodes = nnn, Multihead = MHA, feedforward = FFN).to(device)
+    model = NeuralCDE(input_channels=114, hidden_channels=114, output_channels=114, nodes = nnn, Multihead = MHA, feedforward = FFN).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
     scheduler = StepLR(optimizer, step_size=75, gamma=0.1)
+    
+    
 
-    root = Path("\home\jk\git\Data\dataset")
+    root = Path('/home/jk/git/Data/dataset')
     
     train_dataset = CSIDA(root=root, roomid=[0], userid=None, location=[0],
                       data_shape='split', chunk_size=chunk, mode="amplitude",
@@ -246,9 +249,8 @@ def main(chunk, num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
         
 
 
-        for batch_coeffs, batch_y, batch_y1 in train_dataloader:
-            
-        	batch_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(batch_coeffs)
+        for batch_coeffs, (batch_y, batch_y1) in train_dataloader:
+            batch_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(batch_coeffs)
 
 
             batch_coeffs, batch_y, batch_y1 = batch_coeffs.to(device), batch_y.to(device), batch_y1.to(device)
@@ -265,19 +267,16 @@ def main(chunk, num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
         # Evaluation
         model.eval()
         with torch.no_grad():
-
         	for test_batch in test_dataloader:
-
         		test_X, (test_label,test_label1) = test_batch
-
-	            test_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(test_X).to(device)
-	            pred_y, pred_y1 = model(test_coeffs)
-	            _, predicted_classes = torch.max(pred_y, dim=1)
-	            task1_accuracy = (predicted_classes == test_label.to(device)).float().mean().item()
-	            _, predicted_classes1 = torch.max(pred_y1, dim=1)
-	            task2_accuracy = (predicted_classes1 == test_label1.to(device)).float().mean().item()
-	            print(f'Task1 Test Accuracy: {task1_accuracy}')
-	            print(f'Task2 Test Accuracy: {task2_accuracy}')
+        		test_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(test_X).to(device)
+        		pred_y, pred_y1 = model(test_coeffs)
+        		_, predicted_classes = torch.max(pred_y, dim=1)
+        		task1_accuracy = (predicted_classes == test_label.to(device)).float().mean().item()
+        		_, predicted_classes1 = torch.max(pred_y1, dim=1)
+        		task2_accuracy = (predicted_classes1 == test_label1.to(device)).float().mean().item()
+        		print(f'Task1 Test Accuracy: {task1_accuracy}')
+        		print(f'Task2 Test Accuracy: {task2_accuracy}')
 
 if __name__ == '__main__':
     main(args.chunk , args.num_epochs, args.batch_size, args.lr, args.FFN, args.MHA, args.nnn, args.sharing)
