@@ -11,9 +11,11 @@ from torch.utils.data import DataLoader, Dataset
 import scipy.io as sio
 import torchcde
 import torch.nn.functional as F
+from utils import dataloader
 
 # Argument parsing
 parser = argparse.ArgumentParser(description="Run Neural CDE Training")
+parser.add_argument('--chunk', type=int, default=192, help='Too long, chunk time series data')
 parser.add_argument('--num_epochs', type=int, default=50, help='Number of training epochs')
 parser.add_argument('--batch_size', type=int, default=512, help='Batch size for training')
 parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
@@ -29,39 +31,12 @@ args = parser.parse_args()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 os.environ['KMP_DUPLICATE_LIB_OK'] = 'True'
 
-# Load train data
-data_amp = sio.loadmat('./data/ARIL/train_data_split_amp.mat')
-train_data_amp = data_amp['train_data']
-train_data = torch.from_numpy(train_data_amp).type(torch.FloatTensor).transpose(1, 2)
-train_label = torch.from_numpy(data_amp['train_activity_label']).type(torch.LongTensor).squeeze()
-train_label1 = torch.from_numpy(data_amp['train_location_label']).type(torch.LongTensor).squeeze()
-
-# Load test data
-data_amp = sio.loadmat('./data/ARIL/test_data_split_amp.mat')
-test_data_amp = data_amp['test_data']
-test_data = torch.from_numpy(test_data_amp).type(torch.FloatTensor).transpose(1, 2)
-test_label = torch.from_numpy(data_amp['test_activity_label']).type(torch.LongTensor).squeeze()
-test_label1 = torch.from_numpy(data_amp['test_location_label']).type(torch.LongTensor).squeeze()
 
 # Z-Score normalization
 mean, std = train_data.mean(dim=0, keepdim=True), train_data.std(dim=0, keepdim=True)
 train_data, test_data = (train_data - mean) / std, (test_data - mean) / std
 
-# Custom Dataset
-class CustomTensorDataset(Dataset):
-    def __init__(self, data, labels, transform=None):
-        self.data = data
-        self.labels_A, self.labels_B = labels
-        self.transform = transform
 
-    def __len__(self):
-        return len(self.data)
-
-    def __getitem__(self, idx):
-        sample = self.data[idx]
-        if self.transform:
-            sample = self.transform(sample)
-        return sample, self.labels_A[idx], self.labels_B[idx]
 
 # Neural CDE and helper classes
 # (Define PositionalEncoding, BottleneckBlock, CrossAttention, TransformerEncoder, CDEFunc, NeuralCDE)
@@ -176,6 +151,8 @@ class TransformerEncoder(nn.Module):
     def forward(self, src):
         src = self.positional_encoding(src)
         return self.transformer_encoder(src)
+
+
 class NeuralCDE(torch.nn.Module):
     def __init__(self, input_channels, hidden_channels,nodes, output_channels,Multihead, feedforward, interpolation="cubic"):
         super(NeuralCDE, self).__init__()
@@ -184,16 +161,16 @@ class NeuralCDE(torch.nn.Module):
         self.readout = torch.nn.Linear(hidden_channels, output_channels)
         self.interpolation = interpolation
         
-        self.norm = nn.LayerNorm(52)
-        self.cross_attn = CrossAttention(embed_dim_query=192, embed_dim_key_value=52, embed_dim_output=192, num_heads=Multihead,ffnn_dim=feedforward) #default = 4, 1024
-        self.cross_attn1 = CrossAttention(embed_dim_query=192, embed_dim_key_value=52, embed_dim_output=192, num_heads=Multihead,ffnn_dim=feedforward) #default = 4, 1024
+        self.norm = nn.LayerNorm(114)
+        self.cross_attn = CrossAttention(embed_dim_query=192, embed_dim_key_value=114, embed_dim_output=192, num_heads=Multihead,ffnn_dim=feedforward) #default = 4, 1024
+        self.cross_attn1 = CrossAttention(embed_dim_query=192, embed_dim_key_value=114, embed_dim_output=192, num_heads=Multihead,ffnn_dim=feedforward) #default = 4, 1024
         
         
-        self.fc = nn.Linear(192*52, 200)
+        self.fc = nn.Linear(192*114, 200)
         self.norm3 = nn.LayerNorm(200)
         self.fc1 = nn.Linear(200, 6)
         
-        self.fc2 = nn.Linear(192*52, 200)
+        self.fc2 = nn.Linear(192*114, 200)
         self.norm4 = nn.LayerNorm(200)
         self.fc3 = nn.Linear(200, 16)
 
@@ -242,19 +219,38 @@ class NeuralCDE(torch.nn.Module):
 
 
                     
-def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
+def main(chunk, num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
     model = NeuralCDE(input_channels=52, hidden_channels=52, output_channels=52, nodes = nnn, Multihead = MHA, feedforward = FFN).to(device)
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=lr)
     scheduler = StepLR(optimizer, step_size=75, gamma=0.1)
 
-    train_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(train_data)
-    train_dataset = CustomTensorDataset(train_coeffs, (train_label, train_label1))
-    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True)
+    root = Path("\home\jk\git\Data\dataset")
+    
+    train_dataset = CSIDA(root=root, roomid=[0], userid=None, location=[0],
+                      data_shape='split', chunk_size=chunk, mode="amplitude",
+                      trainmode=True, trainsize=0.8)
+    test_dataset = CSIDA(root=root, roomid=[0], userid=None, location=[0],
+                      data_shape='split', chunk_size=chunk, mode="amplitude",
+                      trainmode=False, trainsize=0.8)
+    train_dataloader = DataLoader(dataset=train_dataset, batch_size=916, shuffle=True)
+    test_dataloader = DataLoader(dataset=test_dataset, batch_size=916, shuffle=True)
+
+
+    
+    
 
     for epoch in range(num_epochs):
         model.train()
+
+        
+
+
         for batch_coeffs, batch_y, batch_y1 in train_dataloader:
+            
+        	batch_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(batch_coeffs)
+
+
             batch_coeffs, batch_y, batch_y1 = batch_coeffs.to(device), batch_y.to(device), batch_y1.to(device)
             optimizer.zero_grad()
             pred_y, pred_y1 = model(batch_coeffs)
@@ -269,14 +265,19 @@ def main(num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
         # Evaluation
         model.eval()
         with torch.no_grad():
-            test_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(test_data).to(device)
-            pred_y, pred_y1 = model(test_coeffs)
-            _, predicted_classes = torch.max(pred_y, dim=1)
-            task1_accuracy = (predicted_classes == test_label.to(device)).float().mean().item()
-            _, predicted_classes1 = torch.max(pred_y1, dim=1)
-            task2_accuracy = (predicted_classes1 == test_label1.to(device)).float().mean().item()
-            print(f'Task1 Test Accuracy: {task1_accuracy}')
-            print(f'Task2 Test Accuracy: {task2_accuracy}')
+
+        	for test_batch in test_dataloader:
+
+        		test_X, (test_label,test_label1) = test_batch
+
+	            test_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(test_X).to(device)
+	            pred_y, pred_y1 = model(test_coeffs)
+	            _, predicted_classes = torch.max(pred_y, dim=1)
+	            task1_accuracy = (predicted_classes == test_label.to(device)).float().mean().item()
+	            _, predicted_classes1 = torch.max(pred_y1, dim=1)
+	            task2_accuracy = (predicted_classes1 == test_label1.to(device)).float().mean().item()
+	            print(f'Task1 Test Accuracy: {task1_accuracy}')
+	            print(f'Task2 Test Accuracy: {task2_accuracy}')
 
 if __name__ == '__main__':
-    main(args.num_epochs, args.batch_size, args.lr, args.FFN, args.MHA, args.nnn, args.sharing)
+    main(args.chunk , args.num_epochs, args.batch_size, args.lr, args.FFN, args.MHA, args.nnn, args.sharing)
