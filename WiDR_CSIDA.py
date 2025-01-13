@@ -23,10 +23,15 @@ parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
 parser.add_argument('--FFN', type=int, default=256, help='Feedforward network')
 parser.add_argument('--MHA', type=int, default=4, help='Multihead attention')
 parser.add_argument('--nnn', type=int, default=400, help='Neural CDE hidden nodes')
-parser.add_argument('--sharing', type=float, default=0.7, help='parameter sharing')
+parser.add_argument('--sharing', type=float, default=0.9, help='parameter sharing')
 args = parser.parse_args()
 
 
+mean = np.load("mean.npy")
+std = np.load("std.npy")
+
+mean = torch.from_numpy(mean)
+std = torch.from_numpy(std)
 
 # GPU or CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -167,13 +172,13 @@ class NeuralCDE(torch.nn.Module):
         self.cross_attn1 = CrossAttention(embed_dim_query=192, embed_dim_key_value=114, embed_dim_output=192, num_heads=Multihead,ffnn_dim=feedforward) #default = 4, 1024
         
         
-        self.fc = nn.Linear(192*114, 200)
-        self.norm3 = nn.LayerNorm(200)
-        self.fc1 = nn.Linear(200, 6)
+        self.fc = nn.Linear(192*114, 100)
+        self.norm3 = nn.LayerNorm(100)
+        self.fc1 = nn.Linear(100, 6)
         
-        self.fc2 = nn.Linear(192*114, 200)
-        self.norm4 = nn.LayerNorm(200)
-        self.fc3 = nn.Linear(200, 5)
+        self.fc2 = nn.Linear(192*114, 100)
+        self.norm4 = nn.LayerNorm(100)
+        self.fc3 = nn.Linear(100, 5)
 
     def forward(self, coeffs):
         if self.interpolation == 'cubic':
@@ -237,7 +242,7 @@ def main(chunk, num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
                       data_shape='split', chunk_size=chunk, mode="amplitude",
                       trainmode=False, trainsize=0.8)
     train_dataloader = DataLoader(dataset=train_dataset, batch_size=916, shuffle=True)
-    test_dataloader = DataLoader(dataset=test_dataset, batch_size=916, shuffle=True)
+    test_dataloader = DataLoader(dataset=test_dataset, batch_size=1150, shuffle=True)
 
 
     
@@ -249,8 +254,12 @@ def main(chunk, num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
         
 
 
-        for batch_coeffs, (batch_y, batch_y1) in train_dataloader:
-            batch_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(batch_coeffs)
+        for batch_X, (batch_y, batch_y1) in train_dataloader:
+            
+            batch_X = (batch_X - mean) / std 
+            
+            
+            batch_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(batch_X).to(device)
 
 
             batch_coeffs, batch_y, batch_y1 = batch_coeffs.to(device), batch_y.to(device), batch_y1.to(device)
@@ -267,16 +276,17 @@ def main(chunk, num_epochs, batch_size, lr,FFN, MHA, nnn, sharing):
         # Evaluation
         model.eval()
         with torch.no_grad():
-        	for test_batch in test_dataloader:
-        		test_X, (test_label,test_label1) = test_batch
-        		test_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(test_X).to(device)
-        		pred_y, pred_y1 = model(test_coeffs)
-        		_, predicted_classes = torch.max(pred_y, dim=1)
-        		task1_accuracy = (predicted_classes == test_label.to(device)).float().mean().item()
-        		_, predicted_classes1 = torch.max(pred_y1, dim=1)
-        		task2_accuracy = (predicted_classes1 == test_label1.to(device)).float().mean().item()
-        		print(f'Task1 Test Accuracy: {task1_accuracy}')
-        		print(f'Task2 Test Accuracy: {task2_accuracy}')
+            for test_batch in test_dataloader:
+                test_X, (test_label,test_label1) = test_batch
+                test_X=(test_X -mean) / std 
+                test_coeffs = torchcde.hermite_cubic_coefficients_with_backward_differences(test_X).to(device)
+                pred_y, pred_y1 = model(test_coeffs)
+                _, predicted_classes = torch.max(pred_y, dim=1)
+                task1_accuracy = (predicted_classes == test_label.to(device)).float().mean().item()
+                _, predicted_classes1 = torch.max(pred_y1, dim=1)
+                task2_accuracy = (predicted_classes1 == test_label1.to(device)).float().mean().item()
+                print(f'Task1 Test Accuracy: {task1_accuracy}')
+                print(f'Task2 Test Accuracy: {task2_accuracy}')
 
 if __name__ == '__main__':
     main(args.chunk , args.num_epochs, args.batch_size, args.lr, args.FFN, args.MHA, args.nnn, args.sharing)

@@ -15,7 +15,7 @@ from utils.augmentation import mixup, cutmix, fmix
 
 # Argument parsing
 parser = argparse.ArgumentParser(description="Run Neural CDE Training")
-parser.add_argument('--num_epochs', type=int, default=50, help='Number of training epochs')
+parser.add_argument('--num_epochs', type=int, default=150, help='Number of training epochs')
 parser.add_argument('--batch_size', type=int, default=512, help='Batch size for training')
 parser.add_argument('--lr', type=float, default=0.001, help='Learning rate')
 parser.add_argument('--FFN', type=int, default=256, help='Feedforward network')
@@ -195,10 +195,16 @@ class NeuralCDE(torch.nn.Module):
         
         self.fc = nn.Linear(192*52, 200)
         self.norm3 = nn.LayerNorm(200)
+        
+        self.dropout1= nn.Dropout(0.7)
+        
         self.fc1 = nn.Linear(200, 6)
         
         self.fc2 = nn.Linear(192*52, 200)
         self.norm4 = nn.LayerNorm(200)
+        
+        self.dropout2= nn.Dropout(0.7)
+        
         self.fc3 = nn.Linear(200, 16)
 
     def forward(self, coeffs):
@@ -234,12 +240,17 @@ class NeuralCDE(torch.nn.Module):
         
         pred_y11 = (self.fc(pred_y))
         pred_y11 = self.norm3(pred_y11)
-        pred_y11 = F.relu(pred_y11)      
+        pred_y11 = F.relu(pred_y11)
+        
+        pred_y11 = self.dropout1(pred_y11)
+              
         pred_y11 = (self.fc1(pred_y11))
         
         pred_y2 = (self.fc2(pred_y1))
         pred_y2 = self.norm4(pred_y2)
         pred_y2 = F.relu(pred_y2)
+        
+        pred_y2 = self.dropout2(pred_y2)
         pred_y2 = (self.fc3(pred_y2))
         
         return pred_y11,pred_y2
