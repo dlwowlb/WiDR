@@ -1,0 +1,465 @@
+
+((py310) jk@jk-B550-AORUS-ELITE:~/git/WiDR$ python WiDR_aug_CSIDA.py
+Epoch: 0   Training loss: 11.522195816040039
+Task1 Test Accuracy: 0.17872807383537292
+Task2 Test Accuracy: 0.21381579339504242
+Task1 Test Accuracy: 0.1974789947271347
+Task2 Test Accuracy: 0.18907563388347626
+Epoch: 1   Training loss: 10.583223342895508
+Task1 Test Accuracy: 0.19298246502876282
+Task2 Test Accuracy: 0.2225877195596695
+Task1 Test Accuracy: 0.1974789947271347
+Task2 Test Accuracy: 0.22268909215927124
+Epoch: 2   Training loss: 9.716642379760742
+Task1 Test Accuracy: 0.15021930634975433
+Task2 Test Accuracy: 0.257675439119339
+Task1 Test Accuracy: 0.13865546882152557
+Task2 Test Accuracy: 0.28151261806488037
+Epoch: 3   Training loss: 8.890110969543457
+Task1 Test Accuracy: 0.19188596308231354
+Task2 Test Accuracy: 0.3322368562221527
+Task1 Test Accuracy: 0.20168069005012512
+Task2 Test Accuracy: 0.31092438101768494
+Epoch: 4   Training loss: 8.06485366821289
+Task1 Test Accuracy: 0.195175439119339
+Task2 Test Accuracy: 0.4024122953414917
+Task1 Test Accuracy: 0.16806723177433014
+Task2 Test Accuracy: 0.42436978220939636
+Epoch: 5   Training loss: 7.410128593444824
+Task1 Test Accuracy: 0.20723684132099152
+Task2 Test Accuracy: 0.359649121761322
+Task1 Test Accuracy: 0.14705882966518402
+Task2 Test Accuracy: 0.4117647409439087
+Epoch: 6   Training loss: 6.627547264099121
+Task1 Test Accuracy: 0.2521008551120758
+Task2 Test Accuracy: 0.47899162769317627
+Epoch: 7   Training loss: 6.007413864135742
+Task1 Test Accuracy: 0.23949581384658813
+Task2 Test Accuracy: 0.5966386795043945
+Epoch: 8   Training loss: 5.3588151931762695
+Task1 Test Accuracy: 0.29411765933036804
+Task2 Test Accuracy: 0.5630252361297607
+Epoch: 9   Training loss: 4.585787296295166
+Task1 Test Accuracy: 0.29411765933036804
+Task2 Test Accuracy: 0.7142857313156128
+Epoch: 10   Training loss: 4.300913333892822
+Task1 Test Accuracy: 0.3445378243923187
+Task2 Test Accuracy: 0.7436975240707397
+Epoch: 11   Training loss: 3.72125244140625
+Task1 Test Accuracy: 0.3613445460796356
+Task2 Test Accuracy: 0.7647058963775635
+Epoch: 12   Training loss: 3.609314441680908
+Task1 Test Accuracy: 0.3361344635486603
+Task2 Test Accuracy: 0.7647058963775635
+Epoch: 13   Training loss: 3.4725098609924316
+Task1 Test Accuracy: 0.3907563090324402
+Task2 Test Accuracy: 0.7941176891326904
+Epoch: 14   Training loss: 3.0949344635009766
+Task1 Test Accuracy: 0.3613445460796356
+Task2 Test Accuracy: 0.8235294818878174
+Epoch: 15   Training loss: 2.8697245121002197
+Task1 Test Accuracy: 0.39915966987609863
+Task2 Test Accuracy: 0.8193277716636658
+Epoch: 16   Training loss: 3.016519784927368
+Task1 Test Accuracy: 0.3613445460796356
+Task2 Test Accuracy: 0.8865546584129333
+Epoch: 17   Training loss: 3.087419033050537
+Task1 Test Accuracy: 0.40336138010025024
+Task2 Test Accuracy: 0.8697479367256165
+Epoch: 18   Training loss: 2.9352800846099854
+Task1 Test Accuracy: 0.4159664213657379
+Task2 Test Accuracy: 0.8697479367256165
+Epoch: 19   Training loss: 2.8203318119049072
+Task1 Test Accuracy: 0.4663865864276886
+Task2 Test Accuracy: 0.9033613801002502
+Epoch: 20   Training loss: 2.739664316177368
+Task1 Test Accuracy: 0.5126050710678101
+Task2 Test Accuracy: 0.8529412150382996
+Epoch: 21   Training loss: 2.360398292541504
+Task1 Test Accuracy: 0.47478994727134705
+Task2 Test Accuracy: 0.9285714626312256
+Epoch: 22   Training loss: 2.299483299255371
+Task1 Test Accuracy: 0.47478994727134705
+Task2 Test Accuracy: 0.936974823474884
+Epoch: 23   Training loss: 2.632619857788086
+Task1 Test Accuracy: 0.4831933081150055
+Task2 Test Accuracy: 0.890756368637085
+Epoch: 24   Training loss: 2.7373673915863037
+Task1 Test Accuracy: 0.542016863822937
+Task2 Test Accuracy: 0.9327731728553772
+Epoch: 25   Training loss: 2.7618916034698486
+Task1 Test Accuracy: 0.5504202246665955
+Task2 Test Accuracy: 0.9243698120117188
+Epoch: 26   Training loss: 2.749837875366211
+Task1 Test Accuracy: 0.6092437505722046
+Task2 Test Accuracy: 0.9201681017875671
+Epoch: 27   Training loss: 2.6193301677703857
+Task1 Test Accuracy: 0.5546218752861023
+Task2 Test Accuracy: 0.9159664511680603
+Epoch: 28   Training loss: 2.3787262439727783
+Task1 Test Accuracy: 0.6260504722595215
+Task2 Test Accuracy: 0.9327731728553772
+Epoch: 29   Training loss: 1.7526004314422607
+Task1 Test Accuracy: 0.6428571939468384
+Task2 Test Accuracy: 0.9453781843185425
+
+Epoch: 30   Training loss: 2.808856725692749
+Task1 Test Accuracy: 0.5336134433746338
+Task2 Test Accuracy: 0.9285714626312256
+Epoch: 31   Training loss: 2.7659037113189697
+Task1 Test Accuracy: 0.6134454011917114
+Task2 Test Accuracy: 0.9033613801002502
+Epoch: 32   Training loss: 2.6526849269866943
+Task1 Test Accuracy: 0.6680672764778137
+Task2 Test Accuracy: 0.966386616230011
+Epoch: 33   Training loss: 1.8054543733596802
+Task1 Test Accuracy: 0.7352941632270813
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 34   Training loss: 2.089643955230713
+Task1 Test Accuracy: 0.7310924530029297
+Task2 Test Accuracy: 0.9453781843185425
+Epoch: 35   Training loss: 2.6130778789520264
+Task1 Test Accuracy: 0.7605042457580566
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 36   Training loss: 1.593016505241394
+Task1 Test Accuracy: 0.8067227602005005
+Task2 Test Accuracy: 0.9537815451622009
+Epoch: 37   Training loss: 2.4085116386413574
+Task1 Test Accuracy: 0.8277311325073242
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 38   Training loss: 1.4853472709655762
+Task1 Test Accuracy: 0.8487395644187927
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 39   Training loss: 1.263282299041748
+Task1 Test Accuracy: 0.8571429252624512
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 40   Training loss: 1.1892211437225342
+Task1 Test Accuracy: 0.8403362035751343
+Task2 Test Accuracy: 0.9495798945426941
+Epoch: 41   Training loss: 2.1299335956573486
+Task1 Test Accuracy: 0.8529412150382996
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 42   Training loss: 1.1382462978363037
+Task1 Test Accuracy: 0.8865546584129333
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 43   Training loss: 2.453671932220459
+Task1 Test Accuracy: 0.9159664511680603
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 44   Training loss: 2.438352584838867
+Task1 Test Accuracy: 0.8823530077934265
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 45   Training loss: 1.4141819477081299
+Task1 Test Accuracy: 0.9117647409439087
+Task2 Test Accuracy: 0.9621849060058594
+Epoch: 46   Training loss: 2.4117019176483154
+Task1 Test Accuracy: 0.890756368637085
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 47   Training loss: 1.4857561588287354
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 48   Training loss: 2.413316488265991
+Task1 Test Accuracy: 0.8949580192565918
+Task2 Test Accuracy: 0.9453781843185425
+Epoch: 49   Training loss: 1.5533326864242554
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 50   Training loss: 1.4308581352233887
+Task1 Test Accuracy: 0.9159664511680603
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 51   Training loss: 1.5029915571212769
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 52   Training loss: 1.8841440677642822
+Task1 Test Accuracy: 0.9243698120117188
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 53   Training loss: 1.0770047903060913
+Task1 Test Accuracy: 0.8865546584129333
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 54   Training loss: 2.3660902976989746
+Task1 Test Accuracy: 0.9453781843185425
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 55   Training loss: 2.379431962966919
+Task1 Test Accuracy: 0.9411765336990356
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 56   Training loss: 2.3479928970336914
+Task1 Test Accuracy: 0.9411765336990356
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 57   Training loss: 1.3960016965866089
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 58   Training loss: 2.289463520050049
+Task1 Test Accuracy: 0.9159664511680603
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 59   Training loss: 2.0240087509155273
+Task1 Test Accuracy: 0.8949580192565918
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 60   Training loss: 0.9846779704093933
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 61   Training loss: 2.341075897216797
+Task1 Test Accuracy: 0.9117647409439087
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 62   Training loss: 1.7496347427368164
+Task1 Test Accuracy: 0.9075630903244019
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 63   Training loss: 1.723564863204956
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 64   Training loss: 2.304431915283203
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.966386616230011
+Epoch: 65   Training loss: 2.026871919631958
+Task1 Test Accuracy: 0.9117647409439087
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 66   Training loss: 0.8943801522254944
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 67   Training loss: 2.136873483657837
+Task1 Test Accuracy: 0.9117647409439087
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 68   Training loss: 1.7806122303009033
+Task1 Test Accuracy: 0.9033613801002502
+Task2 Test Accuracy: 0.966386616230011
+Epoch: 69   Training loss: 0.7381939888000488
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 70   Training loss: 2.1827385425567627
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 71   Training loss: 1.3223304748535156
+Task1 Test Accuracy: 0.9159664511680603
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 72   Training loss: 2.0127766132354736
+Task1 Test Accuracy: 0.9075630903244019
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 73   Training loss: 2.2737948894500732
+Task1 Test Accuracy: 0.8991597294807434
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 74   Training loss: 0.7283411026000977
+Task1 Test Accuracy: 0.9033613801002502
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 75   Training loss: 1.92393159866333
+Task1 Test Accuracy: 0.8991597294807434
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 76   Training loss: 2.079274892807007
+Task1 Test Accuracy: 0.9033613801002502
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 77   Training loss: 2.1200830936431885
+Task1 Test Accuracy: 0.9117647409439087
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 78   Training loss: 1.6325030326843262
+Task1 Test Accuracy: 0.9075630903244019
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 79   Training loss: 1.871802806854248
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 80   Training loss: 1.9485487937927246
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9957983493804932
+Epoch: 81   Training loss: 2.002351999282837
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 82   Training loss: 1.6497530937194824
+Task1 Test Accuracy: 0.9411765336990356
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 83   Training loss: 1.9893869161605835
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 84   Training loss: 0.5259371399879456
+Task1 Test Accuracy: 0.9411765336990356
+Task2 Test Accuracy: 0.9957983493804932
+Epoch: 85   Training loss: 2.153259754180908
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 86   Training loss: 1.0921553373336792
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 87   Training loss: 1.1597025394439697
+Task1 Test Accuracy: 0.9075630903244019
+Task2 Test Accuracy: 0.9957983493804932
+Epoch: 88   Training loss: 1.5953190326690674
+Task1 Test Accuracy: 0.8991597294807434
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 89   Training loss: 1.9823846817016602
+Task1 Test Accuracy: 0.9243698120117188
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 90   Training loss: 0.7411662340164185
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 91   Training loss: 1.8829073905944824
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 92   Training loss: 1.7049633264541626
+Task1 Test Accuracy: 0.9159664511680603
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 93   Training loss: 1.9922630786895752
+Task1 Test Accuracy: 0.9075630903244019
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 94   Training loss: 1.6098774671554565
+Task1 Test Accuracy: 0.8949580192565918
+Task2 Test Accuracy: 0.966386616230011
+Epoch: 95   Training loss: 1.868394136428833
+Task1 Test Accuracy: 0.9117647409439087
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 96   Training loss: 1.5068427324295044
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 97   Training loss: 2.120332717895508
+Task1 Test Accuracy: 0.9033613801002502
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 98   Training loss: 1.9959580898284912
+Task1 Test Accuracy: 0.9243698120117188
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 99   Training loss: 2.042560338973999
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 100   Training loss: 1.8360832929611206
+Task1 Test Accuracy: 0.9159664511680603
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 101   Training loss: 1.767139196395874
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 102   Training loss: 2.0201995372772217
+Task1 Test Accuracy: 0.9537815451622009
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 103   Training loss: 1.7746472358703613
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9957983493804932
+Epoch: 104   Training loss: 1.942106008529663
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 105   Training loss: 2.021848201751709
+Task1 Test Accuracy: 0.9411765336990356
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 106   Training loss: 1.7541066408157349
+Task1 Test Accuracy: 0.9411765336990356
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 107   Training loss: 2.0523972511291504
+Task1 Test Accuracy: 0.9075630903244019
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 108   Training loss: 2.0218873023986816
+Task1 Test Accuracy: 0.9243698120117188
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 109   Training loss: 1.126179814338684
+Task1 Test Accuracy: 0.9411765336990356
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 110   Training loss: 1.54212486743927
+Task1 Test Accuracy: 0.936974823474884
+Task2 Test Accuracy: 0.966386616230011
+Epoch: 111   Training loss: 2.001053810119629
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 112   Training loss: 2.053396463394165
+Task1 Test Accuracy: 0.9579832553863525
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 113   Training loss: 1.2078410387039185
+Task1 Test Accuracy: 0.9411765336990356
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 114   Training loss: 1.890600562095642
+Task1 Test Accuracy: 0.8949580192565918
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 115   Training loss: 1.5357253551483154
+Task1 Test Accuracy: 0.8991597294807434
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 116   Training loss: 1.3033497333526611
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 117   Training loss: 0.9364622235298157
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 1.0
+Epoch: 118   Training loss: 1.4265592098236084
+Task1 Test Accuracy: 0.9159664511680603
+Task2 Test Accuracy: 0.966386616230011
+Epoch: 119   Training loss: 1.7789204120635986
+Task1 Test Accuracy: 0.9243698120117188
+Task2 Test Accuracy: 0.9579832553863525
+Epoch: 120   Training loss: 1.4759316444396973
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 121   Training loss: 1.0460199117660522
+Task1 Test Accuracy: 0.9537815451622009
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 122   Training loss: 0.8311479687690735
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9957983493804932
+Epoch: 123   Training loss: 1.928873896598816
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.966386616230011
+Epoch: 124   Training loss: 1.7200939655303955
+Task1 Test Accuracy: 0.9201681017875671
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 125   Training loss: 1.1360145807266235
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 126   Training loss: 1.308712363243103
+Task1 Test Accuracy: 0.936974823474884
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 127   Training loss: 1.389540433883667
+Task1 Test Accuracy: 0.9537815451622009
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 128   Training loss: 1.0899471044540405
+Task1 Test Accuracy: 0.9453781843185425
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 129   Training loss: 2.096752405166626
+Task1 Test Accuracy: 0.9385964870452881
+Task2 Test Accuracy: 0.9813596606254578
+Epoch: 130   Training loss: 1.7161798477172852
+Task1 Test Accuracy: 0.9159664511680603
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 131   Training loss: 1.5948883295059204
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 132   Training loss: 2.0416319370269775
+Task1 Test Accuracy: 0.9159664511680603
+Task2 Test Accuracy: 0.9747899770736694
+Epoch: 133   Training loss: 1.7989764213562012
+Task1 Test Accuracy: 0.9320175647735596
+Task2 Test Accuracy: 0.9791666865348816
+Epoch: 134   Training loss: 2.0367825031280518
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 135   Training loss: 0.5755555033683777
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9957983493804932
+Epoch: 136   Training loss: 1.9928045272827148
+Task1 Test Accuracy: 0.9285714626312256
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 137   Training loss: 2.0977723598480225
+Task1 Test Accuracy: 0.936974823474884
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 138   Training loss: 0.8542035222053528
+Task1 Test Accuracy: 0.9327731728553772
+Task2 Test Accuracy: 0.9915966987609863
+Epoch: 139   Training loss: 2.004462480545044
+Task1 Test Accuracy: 0.9243698120117188
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 140   Training loss: 1.7571444511413574
+Task1 Test Accuracy: 0.9243698120117188
+Task2 Test Accuracy: 0.9831933379173279
+Epoch: 141   Training loss: 1.0167933702468872
+Task1 Test Accuracy: 0.9537815451622009
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 142   Training loss: 1.7878780364990234
+Task1 Test Accuracy: 0.936974823474884
+Task2 Test Accuracy: 0.9789916276931763
+Epoch: 143   Training loss: 1.7724956274032593
+Task1 Test Accuracy: 0.9537815451622009
+Task2 Test Accuracy: 0.9873949885368347
+Epoch: 144   Training loss: 2.040026903152466
+Task1 Test Accuracy: 0.9331140518188477
+Task2 Test Accuracy: 0.9835526347160339
+Epoch: 145   Training loss: 0.6203226447105408
+Task1 Test Accuracy: 0.9320175647735596
+Task2 Test Accuracy: 0.9802631735801697
+Epoch: 146   Training loss: 1.6837446689605713
+Task1 Test Accuracy: 0.9298245906829834
+Task2 Test Accuracy: 0.9824561476707458
+Epoch: 147   Training loss: 1.454201340675354
+Task1 Test Accuracy: 0.9298245906829834
+Task2 Test Accuracy: 0.9824561476707458
+Epoch: 148   Training loss: 1.9999710321426392
+Task1 Test Accuracy: 0.936974823474884
+Task2 Test Accuracy: 0.9705882668495178
+Epoch: 149   Training loss: 1.9782381057739258
+Task1 Test Accuracy: 0.936974823474884
+Task2 Test Accuracy: 0.9831933379173279
